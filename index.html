@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gestão de Almoxarifado</title>
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+
+<body>
+    <div id="loginBox">
+        <h2>🔒 Acesso ao Almoxarifado</h2>
+        <input type="text" id="loginUser" placeholder="Usuário">
+        <input type="password" id="loginPass" placeholder="Senha">
+        <button onclick="login()">Entrar</button>
+    </div>
+
+    <header>
+        <h1>Gestão de Almoxarifado</h1>
+    </header>
+
+    <nav>
+        <button onclick="showSection('dashboard')">Dashboard</button>
+        <button onclick="showSection('cadastro')">Cadastrar Produto</button>
+        <button onclick="showSection('entrada')">Entrada</button>
+        <button onclick="showSection('saida')">Saída</button>
+        <button onclick="showSection('estoque')">Estoque</button>
+        <button onclick="showSection('historico')">Histórico</button>
+        <button onclick="showSection('relatorios')">Relatórios</button>
+        <button onclick="showSection('configuracoes')">Configurações</button>
+    </nav>
+
+    <main>
+
+        <section id="cadastro" class="active">
+            <h2>Cadastro de Produto</h2>
+            <form id="formCadastro">
+                <input type="text" id="codigo" placeholder="Código" required>
+                <input type="text" id="nome" placeholder="Nome do Produto" required>
+                <input type="text" id="fornecedor" placeholder="Fornecedor">
+                <input type="text" id="local" placeholder="Local de Armazenamento">
+                <input type="number" id="estoqueMin" placeholder="Estoque Mínimo">
+                <button type="submit">Cadastrar</button>
+            </form>
+        </section>
+
+        <section id="entrada">
+            <h2>Entrada de Material</h2>
+            <form id="formEntrada">
+                <input type="text" id="codigoEntrada" placeholder="Código do Produto" required>
+                <input type="number" id="quantidadeEntrada" placeholder="Quantidade" required>
+                <button type="submit">Registrar Entrada</button>
+            </form>
+        </section>
+
+        <section id="saida">
+            <h2>Saída de Material</h2>
+            <form id="formSaida">
+                <input type="text" id="codigoSaida" placeholder="Código do Produto" required>
+                <input type="number" id="quantidadeSaida" placeholder="Quantidade" required>
+                <button type="submit">Registrar Saída</button>
+            </form>
+        </section>
+
+        <section id="estoque">
+            <h2>Estoque Atual</h2>
+            <div class="search-filter">
+                <input type="text" id="pesquisaEstoque" placeholder="Pesquisar por código ou nome">
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Nome</th>
+                        <th>Quantidade</th>
+                        <th>Estoque Mínimo</th>
+                    </tr>
+                </thead>
+                <tbody id="tabelaEstoque"></tbody>
+            </table>
+            <button id="exportaPdf" onclick="exportarPDF()">Exportar Estoque para PDF</button>
+        </section>
+
+        <section id="dashboard">
+            <h2>Dashboard</h2>
+            <canvas id="graficoEstoque"></canvas>
+        </section>
+
+        <section id="historico">
+            <h2>Histórico de Movimentações</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data/Hora</th>
+                        <th>Tipo</th>
+                        <th>Código</th>
+                        <th>Nome</th>
+                        <th>Quantidade</th>
+                    </tr>
+                </thead>
+                <tbody id="tabelaHistorico"></tbody>
+            </table>
+        </section>
+
+        <section id="relatorios">
+            <h2>Relatórios</h2>
+            <div class="report-options">
+                <div>
+                    <label for="relatorioPeriodoInicio">De:</label>
+                    <input type="date" id="relatorioPeriodoInicio">
+                </div>
+                <div>
+                    <label for="relatorioPeriodoFim">Até:</label>
+                    <input type="date" id="relatorioPeriodoFim">
+                </div>
+                <button onclick="gerarRelatorioPorPeriodo()">Gerar por Período</button>
+            </div>
+            <div class="report-options">
+                <label for="relatorioProduto">Produto:</label>
+                <input type="text" id="relatorioProduto" placeholder="Nome ou Código" style="padding: 10px; border-radius: 8px;" >
+                <button onclick="gerarRelatorioPorProduto()">Gerar por Produto</button>
+            </div>
+            <button onclick="gerarRelatorioEstoqueBaixo()">Produtos com Estoque Baixo</button>
+            <div id="relatorioContainer">
+            </div>
+        </section>
+
+        <section id="configuracoes">
+            <h2>Configurações</h2>
+            <div class="config-item">
+                <label for="nomeAlmoxarifado">Nome do Almoxarifado:</label>
+                <input type="text" id="nomeAlmoxarifado" value="Meu Almoxarifado">
+            </div>
+            <button onclick="salvarConfiguracoes()">Salvar Configurações</button>
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
