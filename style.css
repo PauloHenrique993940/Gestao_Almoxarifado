@@ -27,18 +27,18 @@ section.active {
 /* Corpo do layout */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-image: url(./assets/Curso-de-Gestão-do-Almoxarifado-e-Inventário-Físico.jpg);
-    background-repeat: no-repeat;
-    background-size: cover;        /* Faz a imagem cobrir toda a tela */
-    background-position: center;   /* Centraliza a imagem */
-    color: #f4f4f4;
-    min-height: 100vh;             /* Garante altura mínima */
+    background-color: #2e2e2e;         /* Tom grafite escuro */
+    background-image: linear-gradient(145deg, #3a3a3a, #1f1f1f); /* Efeito industrial metálico */
+    color: #e0e0e0;                    /* Cinza claro para contraste */
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     position: relative;
-    padding-bottom: 60px;          /* Espaço pro footer fixo */
-    margin: 0;                     /* Remove margens padrão */
+    padding-bottom: 60px;
+    margin: 0;
 }
+
+
 
 
 /* Cabeçalho */
@@ -60,7 +60,8 @@ header h1 {
 #loginBox {
     background: transparent;
     padding: 35px;
-    width: 420px;
+    max-width: 768px;
+    width: 100%;
     border-radius: 15px;
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
     text-align: center;
@@ -291,25 +292,7 @@ button[type="submit"]:hover {
 
 /* Responsividade */
 
-@media (max-width: 425px) {
-    #loginBox {
-        width: 100vw;
-        height: 100vh;
-        padding: 20px;
-        border-radius: 0;
-        box-shadow: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        transform: none;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        backdrop-filter: blur(8px);
-        opacity: 0.95;
-    }
-}
+
 
 @media (max-width: 768px) {
     nav {
