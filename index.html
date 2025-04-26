@@ -5,14 +5,13 @@
     <meta charset="UTF-8">
     <title>Gestão de Almoxarifado</title>
     <link rel="stylesheet" href="style.css">
-
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 
 <body>
     <div id="loginBox">
-        <h2>🔒 Acesso ao Almoxarifado</h2>
+        <h2>🔒 Acesso ao Sistema</h2>
         <input type="text" id="loginUser" placeholder="Usuário">
         <input type="password" id="loginPass" placeholder="Senha">
         <button onclick="login()">Entrar</button>
@@ -31,11 +30,27 @@
         <button onclick="showSection('historico')">Histórico</button>
         <button onclick="showSection('relatorios')">Relatórios</button>
         <button onclick="showSection('configuracoes')">Configurações</button>
+        <button onclick="showSection('inventario')">Inventário</button>
+        <button onclick="showSection('patrimonio')">Patrimônio</button>
+        <button onclick="showSection('manutencao')">Manutenção</button>
+        <button onclick="showSection('valorizacaoDepreciacao')">Valor/Depreciação</button>
+        <button onclick="showSection('controleEstoqueAvancado')">Controle Estoque+</button>
+        <button onclick="showSection('aquisicao')">Aquisição</button>
+        <button onclick="showSection('relatoriosAvancados')">Relatórios+</button>
+        <button onclick="showSection('depositoArmazenamento')">Depósito</button>
+        <button onclick="showSection('segurancaAcesso')">Segurança</button>
+        <button onclick="showSection('doacoesDescartes')">Doações/Descartes</button>
+        <button onclick="showSection('integracao')">Integração</button>
+        <button onclick="showSection('identificacaoMateriais')">Identificação</button>
     </nav>
 
     <main>
+        <section id="dashboard" class="active">
+            <h2>Dashboard</h2>
+            <canvas id="graficoEstoque"></canvas>
+        </section>
 
-        <section id="cadastro" class="active">
+        <section id="cadastro" class="hidden">
             <h2>Cadastro de Produto</h2>
             <form id="formCadastro">
                 <input type="text" id="codigo" placeholder="Código" required>
@@ -47,7 +62,7 @@
             </form>
         </section>
 
-        <section id="entrada">
+        <section id="entrada" class="hidden">
             <h2>Entrada de Material</h2>
             <form id="formEntrada">
                 <input type="text" id="codigoEntrada" placeholder="Código do Produto" required>
@@ -56,7 +71,7 @@
             </form>
         </section>
 
-        <section id="saida">
+        <section id="saida" class="hidden">
             <h2>Saída de Material</h2>
             <form id="formSaida">
                 <input type="text" id="codigoSaida" placeholder="Código do Produto" required>
@@ -65,7 +80,7 @@
             </form>
         </section>
 
-        <section id="estoque">
+        <section id="estoque" class="hidden">
             <h2>Estoque Atual</h2>
             <div class="search-filter">
                 <input type="text" id="pesquisaEstoque" placeholder="Pesquisar por código ou nome">
@@ -84,12 +99,7 @@
             <button id="exportaPdf" onclick="exportarPDF()">Exportar Estoque para PDF</button>
         </section>
 
-        <section id="dashboard">
-            <h2>Dashboard</h2>
-            <canvas id="graficoEstoque"></canvas>
-        </section>
-
-        <section id="historico">
+        <section id="historico" class="hidden">
             <h2>Histórico de Movimentações</h2>
             <table>
                 <thead>
@@ -105,7 +115,7 @@
             </table>
         </section>
 
-        <section id="relatorios">
+        <section id="relatorios" class="hidden">
             <h2>Relatórios</h2>
             <div class="report-options">
                 <div>
@@ -120,7 +130,7 @@
             </div>
             <div class="report-options">
                 <label for="relatorioProduto">Produto:</label>
-                <input type="text" id="relatorioProduto" placeholder="Nome ou Código" style="padding: 10px; border-radius: 8px;" >
+                <input type="text" id="relatorioProduto" placeholder="Nome ou Código" style="padding: 10px; border-radius: 8px;">
                 <button onclick="gerarRelatorioPorProduto()">Gerar por Produto</button>
             </div>
             <button onclick="gerarRelatorioEstoqueBaixo()">Produtos com Estoque Baixo</button>
@@ -128,7 +138,7 @@
             </div>
         </section>
 
-        <section id="configuracoes">
+        <section id="configuracoes" class="hidden">
             <h2>Configurações</h2>
             <div class="config-item">
                 <label for="nomeAlmoxarifado">Nome do Almoxarifado:</label>
@@ -137,7 +147,303 @@
             <button onclick="salvarConfiguracoes()">Salvar Configurações</button>
         </section>
 
+        <section id="inventario" class="hidden">
+            <h2>Inventário de Materiais</h2>
+            <button onclick="abrirCadastroMaterial()">Cadastrar Material</button>
+            <div id="cadastroMaterial" class="hidden">
+                <h3>Cadastrar Novo Material</h3>
+                <form id="formCadastroMaterial">
+                    <input type="text" id="codigoMaterial" placeholder="Código do Material" required>
+                    <input type="text" id="nomeMaterial" placeholder="Nome do Material" required>
+                    <input type="text" id="descricaoMaterial" placeholder="Descrição">
+                    <input type="text" id="localizacaoMaterial" placeholder="Localização Atual">
+                    <input type="date" id="dataCadastroMaterial">
+                    <button type="submit">Cadastrar</button>
+                </form>
+            </div>
+
+            <h3>Movimentação de Materiais</h3>
+            <button onclick="abrirEntradaMaterial()">Registrar Entrada</button>
+            <div id="entradaMaterial" class="hidden">
+                <h3>Entrada de Material</h3>
+                <form id="formEntradaMaterial">
+                    <input type="text" id="codigoEntradaMaterial" placeholder="Código do Material" required>
+                    <input type="number" id="quantidadeEntradaMaterial" placeholder="Quantidade" required>
+                    <input type="date" id="dataEntradaMaterial">
+                    <textarea id="observacoesEntradaMaterial" placeholder="Observações"></textarea>
+                    <button type="submit">Registrar Entrada</button>
+                </form>
+            </div>
+
+            <button onclick="abrirSaidaMaterial()">Registrar Saída</button>
+            <div id="saidaMaterial" class="hidden">
+                <h3>Saída de Material</h3>
+                <form id="formSaidaMaterial">
+                    <input type="text" id="codigoSaidaMaterial" placeholder="Código do Material" required>
+                    <input type="number" id="quantidadeSaidaMaterial" placeholder="Quantidade" required>
+                    <input type="date" id="dataSaidaMaterial">
+                    <input type="text" id="responsavelSaidaMaterial" placeholder="Responsável pela Saída">
+                    <textarea id="observacoesSaidaMaterial" placeholder="Observações"></textarea>
+                    <button type="submit">Registrar Saída</button>
+                </form>
+            </div>
+
+            <h3>Lista de Materiais</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Nome</th>
+                        <th>Descrição</th>
+                        <th>Localização</th>
+                    </tr>
+                </thead>
+                <tbody id="listaMateriais"></tbody>
+            </table>
+        </section>
+
+        <section id="patrimonio" class="hidden">
+            <h2>Controle de Patrimônio</h2>
+            <button onclick="abrirCadastroPatrimonio()">Cadastrar Bem Patrimonial</button>
+            <div id="cadastroPatrimonio" class="hidden">
+                <h3>Cadastrar Novo Bem Patrimonial</h3>
+                <form id="formCadastroPatrimonio">
+                    <input type="text" id="codigoPatrimonio" placeholder="Código do Patrimônio" required>
+                    <input type="text" id="nomePatrimonio" placeholder="Nome do Bem" required>
+                    <input type="text" id="descricaoPatrimonio" placeholder="Descrição">
+                    <input type="number" id="valorAquisicaoPatrimonio" placeholder="Valor de Aquisição">
+                    <input type="date" id="dataAquisicaoPatrimonio">
+                    <input type="text" id="documentoFiscalPatrimonio" placeholder="Documento Fiscal">
+                    <button type="submit">Cadastrar</button>
+                </form>
+            </div>
+
+            <h3>Lista de Bens Patrimoniais</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Nome</th>
+                        <th>Valor de Aquisição</th>
+                        <th>Data de Aquisição</th>
+                    </tr>
+                </thead>
+                <tbody id="listaPatrimonios"></tbody>
+            </table>
+
+            <h3>Manutenção de Patrimônio</h3>
+            <button onclick="abrirRegistroManutencaoPatrimonio()">Registrar Manutenção</button>
+            <div id="registroManutencaoPatrimonio" class="hidden">
+                <form id="formRegistroManutencaoPatrimonio">
+                    <input type="text" id="codigoManutencaoPatrimonio" placeholder="Código do Patrimônio" required>
+                    <input type="date" id="dataManutencaoPatrimonio">
+                    <input type="text" id="tipoManutencaoPatrimonio" placeholder="Tipo de Manutenção (Preventiva/Corretiva)">
+                    <textarea id="descricaoManutencaoPatrimonio" placeholder="Descrição da Manutenção"></textarea>
+                    <button type="submit">Registrar Manutenção</button>
+                </form>
+            </div>
+        </section>
+
+        <section id="manutencao" class="hidden">
+            <h2>Manutenção Preventiva e Corretiva</h2>
+            <button onclick="abrirAgendamentoManutencao()">Agendar Manutenção</button>
+            <div id="agendamentoManutencao" class="hidden">
+                <h3>Agendar Manutenção</h3>
+                <form id="formAgendamentoManutencao">
+                    <input type="text" id="codigoManutencao" placeholder="Código do Item" required>
+                    <input type="date" id="dataAgendamentoManutencao">
+                    <input type="text" id="tipoAgendamentoManutencao" placeholder="Tipo de Manutenção">
+                    <textarea id="observacoesAgendamentoManutencao" placeholder="Observações"></textarea>
+                    <button type="submit">Agendar</button>
+                </form>
+            </div>
+
+            <h3>Histórico de Manutenções</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Código do Item</th>
+                        <th>Tipo de Manutenção</th>
+                        <th>Descrição</th>
+                    </tr>
+                </thead>
+                <tbody id="historicoManutencoes"></tbody>
+            </table>
+        </section>
+
+        <section id="valorizacaoDepreciacao" class="hidden">
+            <h2>Acompanhamento de Valorização e Depreciação</h2>
+            <h3>Depreciação/Valorização</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código do Bem</th>
+                        <th>Nome do Bem</th>
+                        <th>Valor Inicial</th>
+                        <th>Valor Atual</th>
+                        <th>Depreciação/Valorização</th>
+                    </tr>
+                </thead>
+                <tbody id="tabelaValorizacaoDepreciacao"></tbody>
+            </table>
+        </section>
+
+        <section id="controleEstoqueAvancado" class="hidden">
+            <h2>Controle de Estoque</h2>
+            <h3>Níveis de Estoque</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Nome</th>
+                        <th>Estoque Atual</th>
+                        <th>Estoque Mínimo</th>
+                        <th>Estoque Máximo</th>
+                    </tr>
+                </thead>
+                <tbody id="tabelaControleEstoqueAvancado"></tbody>
+            </table>
+            <button onclick="gerarAlertaReposicao()">Gerar Alertas de Reposição</button>
+        </section>
+
+        <section id="aquisicao" class="hidden">
+            <h2>Controle de Aquisição</h2>
+            <button onclick="abrirRegistroAquisicao()">Registrar Aquisição</button>
+            <div id="registroAquisicao" class="hidden">
+                <h3>Registrar Nova Aquisição</h3>
+                <form id="formRegistroAquisicao">
+                    <input type="text" id="codigoAquisicao" placeholder="Código do Item" required>
+                    <input type="number" id="quantidadeAquisicao" placeholder="Quantidade" required>
+                    <input type="number" step="0.01" id="precoUnitarioAquisicao" placeholder="Preço Unitário">
+                    <input type="date" id="dataAquisicao">
+                    <input type="text" id="fornecedorAquisicao" placeholder="Fornecedor">
+                    <input type="text" id="statusEntregaAquisicao" placeholder="Status da Entrega">
+                    <button type="submit">Registrar Aquisição</button>
+                </form>
+            </div>
+
+            <h3>Histórico de Aquisições</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Nome</th>
+                        <th>Quantidade</th>
+                        <th>Preço Unitário</th>
+                        <th>Data da Aquisição</th>
+                        <th>Fornecedor</th>
+                        <th>Status da Entrega</th>
+                    </tr>
+                </thead>
+                <tbody id="tabelaAquisicoes"></tbody>
+            </table>
+        </section>
+
+        <section id="relatoriosAvancados" class="hidden">
+            <h2>Relatórios e Análises</h2>
+            <button onclick="gerarRelatorioInventario()">Relatório de Inventário</button>
+            <button onclick="gerarRelatorioDepreciacao()">Relatório de Depreciação</button>
+            <button onclick="gerarRelatorioManutencaoCustos()">Relatório de Custos de Manutenção</button>
+            <div id="relatoriosAvancadosContainer"></div>
+        </section>
+
+        <section id="depositoArmazenamento" class="hidden">
+            <h2>Gestão de Depósito e Armazenamento</h2>
+            <h3>Condições de Armazenamento</h3>
+            <textarea id="condicoesArmazenamento" placeholder="Descrição das condições de armazenamento"></textarea>
+            <h3>Layout do Depósito</h3>
+            <textarea id="layoutDeposito" placeholder="Descrição do layout do depósito"></textarea>
+        </section>
+
+        <section id="segurancaAcesso" class="hidden">
+            <h2>Segurança e Controle de Acesso</h2>
+            <h3>Controle de Acesso</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Usuário</th>
+                        <th>Permissões</th>
+                        <th>Último Acesso</th>
+                    </tr>
+                </thead>
+                <tbody id="tabelaControleAcesso"></tbody>
+            </table>
+        </section>
+
+        <section id="doacoesDescartes" class="hidden">
+            <h2>Gestão de Doações e Descartes</h2>
+            <button onclick="abrirRegistroDoacao()">Registrar Doação</button>
+            <div id="registroDoacao" class="hidden">
+                <h3>Registrar Doação</h3>
+                <form id="formRegistroDoacao">
+                    <input type="text" id="codigoDoacao" placeholder="Código do Item">
+                    <input type="text" id="nomeDoacao" placeholder="Nome do Item">
+                    <input type="number" id="quantidadeDoacao" placeholder="Quantidade">
+                    <input type="text" id="destinatarioDoacao" placeholder="Destinatário">
+                    <input type="date" id="dataDoacao">
+                    <button type="submit">Registrar Doação</button>
+                </form>
+            </div>
+
+            <button onclick="abrirRegistroDescarte()">Registrar Descarte</button>
+            <div id="registroDescarte" class="hidden">
+                <h3>Registrar Descarte</h3>
+                <form id="formRegistroDescarte">
+                    <input type="text" id="codigoDescarte" placeholder="Código do Item">
+                    <input type="text" id="nomeDescarte" placeholder="Nome do Item">
+                    <input type="number" id="quantidadeDescarte" placeholder="Quantidade">
+                    <input type="text" id="metodoDescarte" placeholder="Método de Descarte">
+                    <input type="date" id="dataDescarte">
+                    <textarea id="justificativaDescarte" placeholder="Justificativa"></textarea>
+                    <button type="submit">Registrar Descarte</button>
+                </form>
+            </div>
+
+            <h3>Lista de Doações</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Nome</th>
+                        <th>Quantidade</th>
+                        <th>Destinatário</th>
+                        <th>Data da Doação</th>
+                    </tr>
+                </thead>
+                <tbody id="listaDoacoes"></tbody>
+            </table>
+
+            <h3>Lista de Descartes</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Nome</th>
+                        <th>Quantidade</th>
+                        <th>Método de Descarte</th>
+                        <th>Data do Descarte</th>
+                        <th>Justificativa</th>
+                    </tr>
+                </thead>
+                <tbody id="listaDescartes"></tbody>
+            </table>
+        </section>
+
+        <section id="integracao" class="hidden">
+            <h2>Integração com Outros Sistemas</h2>
+            <p>Funcionalidade para integrar com outros sistemas (WMS, CRM, etc.).</p>
+        </section>
+
+        <section id="identificacaoMateriais" class="hidden">
+            <h2>Identificação de Materiais</h2>
+            <p>Funcionalidade para gerar etiquetas e códigos de barras.</p>
+        </section>
     </main>
+
+    <footer>
+        <p>&copy; 2024 Gestão de Almoxarifado. Todos os direitos reservados.</p>
+    </footer>
 
     <script src="script.js"></script>
 </body>
