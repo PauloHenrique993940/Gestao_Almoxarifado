@@ -18,31 +18,45 @@
     </div>
 
     <header>
-        <h1>SmartStock</h1>
+        <nav>
+            <div>
+                <button onclick="showSection('cadastro')">Cadastrar Produto</button>
+                <button onclick="showSection('entrada')">Entrada</button>
+                <button onclick="showSection('saida')">Saída</button>
+                <button onclick="showSection('estoque')">Estoque</button>
+    
+            </div>
+            <div>
+                <button onclick="showSection('dashboard')">Dashboard</button>
+                <button onclick="showSection('historico')">Histórico</button>
+                <button onclick="showSection('relatorios')">Relatórios</button>
+                <button onclick="showSection('configuracoes')">Configurações</button>
+            </div>
+            <div>
+                <button onclick="showSection('inventario')">Inventário</button>
+                <button onclick="showSection('patrimonio')">Patrimônio</button>
+                <button onclick="showSection('manutencao')">Manutenção</button>
+                <button onclick="showSection('segurancaAcesso')">Segurança</button>
+            </div>
+    
+    
+            <div>
+                <button onclick="showSection('depositoArmazenamento')">Depósito</button>
+                <button onclick="showSection('doacoesDescartes')">Doações/Descartes</button>
+                <button onclick="showSection('integracao')">Integração</button>
+                <button onclick="showSection('identificacaoMateriais')">Identificação</button>
+            </div>
+            <div>
+                <button onclick="showSection('valorizacaoDepreciacao')">Valor/Depreciação</button>
+                <button onclick="showSection('controleEstoqueAvancado')">Controle Estoque+</button>
+                <button onclick="showSection('aquisicao')">Aquisição</button>
+                <button onclick="showSection('relatoriosAvancados')">Relatórios+</button>
+            </div>
+        </nav>
+        
     </header>
 
-    <nav>
-        <button onclick="showSection('dashboard')">Dashboard</button>
-        <button onclick="showSection('cadastro')">Cadastrar Produto</button>
-        <button onclick="showSection('entrada')">Entrada</button>
-        <button onclick="showSection('saida')">Saída</button>
-        <button onclick="showSection('estoque')">Estoque</button>
-        <button onclick="showSection('historico')">Histórico</button>
-        <button onclick="showSection('relatorios')">Relatórios</button>
-        <button onclick="showSection('configuracoes')">Configurações</button>
-        <button onclick="showSection('inventario')">Inventário</button>
-        <button onclick="showSection('patrimonio')">Patrimônio</button>
-        <button onclick="showSection('manutencao')">Manutenção</button>
-        <button onclick="showSection('valorizacaoDepreciacao')">Valor/Depreciação</button>
-        <button onclick="showSection('controleEstoqueAvancado')">Controle Estoque+</button>
-        <button onclick="showSection('aquisicao')">Aquisição</button>
-        <button onclick="showSection('relatoriosAvancados')">Relatórios+</button>
-        <button onclick="showSection('depositoArmazenamento')">Depósito</button>
-        <button onclick="showSection('segurancaAcesso')">Segurança</button>
-        <button onclick="showSection('doacoesDescartes')">Doações/Descartes</button>
-        <button onclick="showSection('integracao')">Integração</button>
-        <button onclick="showSection('identificacaoMateriais')">Identificação</button>
-    </nav>
+    
 
     <main>
         <section id="dashboard" class="active">
@@ -130,7 +144,8 @@
             </div>
             <div class="report-options">
                 <label for="relatorioProduto">Produto:</label>
-                <input type="text" id="relatorioProduto" placeholder="Nome ou Código" style="padding: 10px; border-radius: 8px;" />
+                <input type="text" id="relatorioProduto" placeholder="Nome ou Código"
+                    style="padding: 10px; border-radius: 8px;" />
                 <button onclick="gerarRelatorioPorProduto()">Gerar por Produto</button>
             </div>
             <button onclick="gerarRelatorioEstoqueBaixo()">Produtos com Estoque Baixo</button>
@@ -237,7 +252,8 @@
                 <form id="formRegistroManutencaoPatrimonio">
                     <input type="text" id="codigoManutencaoPatrimonio" placeholder="Código do Patrimônio" required>
                     <input type="date" id="dataManutencaoPatrimonio">
-                    <input type="text" id="tipoManutencaoPatrimonio" placeholder="Tipo de Manutenção (Preventiva/Corretiva)">
+                    <input type="text" id="tipoManutencaoPatrimonio"
+                        placeholder="Tipo de Manutenção (Preventiva/Corretiva)">
                     <textarea id="descricaoManutencaoPatrimonio" placeholder="Descrição da Manutenção"></textarea>
                     <button type="submit">Registrar Manutenção</button>
                 </form>
@@ -442,7 +458,7 @@
     </main>
 
     <footer>
-        <p>&copy; 2025 Gestão de Almoxarifado. Todos os direitos reservados.</p>
+        <p>&copy; Desenvolvido por Paulo. Todos os direitos reservados.</p>
     </footer>
 
     <script src="script.js"></script>
